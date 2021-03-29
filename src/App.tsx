@@ -12,6 +12,13 @@ export interface GenreResponseProps {
   title: string;
 }
 
+export interface MovieCardProps {
+  title: string;
+  poster: string;
+  rating: string;
+  runtime: string;
+}
+
 export interface MovieProps {
   Title: string;
   Poster: string;
@@ -29,6 +36,23 @@ export function App() {
 
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
+
+
+  useEffect(() => {
+    api.get<GenreResponseProps[]>('genres').then(response => {
+      setGenres(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
+      setMovies(response.data);
+    });
+
+    api.get<GenreResponseProps>(`genres/${selectedGenreId}`).then(response => {
+      setSelectedGenre(response.data);
+    })
+  }, [selectedGenreId]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>

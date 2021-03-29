@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MovieProps } from '../App';
 import { Button } from '../components/Button';
+import { api } from '../services/api';
 
 import './styles/sidebar.scss';
 
@@ -16,6 +18,11 @@ export function SideBar() {
   function handleClickButton(id: number) {
     setSelectedGenreId(id);
   }
+
+  function selectedGenresId() {
+    return setGenres;
+  }
+  
 
   // Complete aqui
   <nav className="sidebar">
