@@ -1,10 +1,8 @@
-import './styles/global.scss';
-
-import './styles/sidebar.scss';
-import './styles/content.scss';
-
 import { useEffect, useState } from 'react';
+import { Content } from './components/Content';
+import { SideBar } from './components/SideBar';
 import { api } from './services/api';
+import './styles/global.scss';
 
 export interface GenreResponseProps {
   id: number;
@@ -12,14 +10,8 @@ export interface GenreResponseProps {
   title: string;
 }
 
-export interface MovieCardProps {
-  title: string;
-  poster: string;
-  rating: string;
-  runtime: string;
-}
-
 export interface MovieProps {
+  imdbID: string;
   Title: string;
   Poster: string;
   Ratings: Array<{
@@ -36,7 +28,6 @@ export function App() {
 
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
-
 
   useEffect(() => {
     api.get<GenreResponseProps[]>('genres').then(response => {
@@ -56,7 +47,15 @@ export function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      
+      <SideBar
+        genres={genres}
+        selectedGenreId={selectedGenreId}
+        setSelectedGenreId={setSelectedGenreId}
+      />
+      <Content
+        movies={movies}
+        selectedGenre={selectedGenre}
+      />
     </div>
   )
 }

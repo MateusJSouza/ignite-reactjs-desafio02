@@ -1,44 +1,34 @@
-import { useEffect, useState } from 'react';
-import { MovieProps } from '../App';
+import { GenreResponseProps } from '../App';
 import { Button } from '../components/Button';
-import { api } from '../services/api';
 
-import './styles/sidebar.scss';
+import '../styles/sidebar.scss';
 
-export interface GenreResponseProps {
-  id: number;
-  name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
-  title: string;
+interface SideBarProps {
+  genres: GenreResponseProps[],
+  selectedGenreId: number;
+  setSelectedGenreId: (id: number) => void;
 }
 
-export function SideBar() {
-  const [selectedGenreId, setSelectedGenreId] = useState(1);
-  const [genres, setGenres] = useState<GenreResponseProps[]>([]);
-
+export function SideBar({ genres, selectedGenreId, setSelectedGenreId }: SideBarProps) {
   function handleClickButton(id: number) {
     setSelectedGenreId(id);
   }
 
-  function selectedGenresId() {
-    return setGenres;
-  }
-  
+  return (
+    <nav className="sidebar">
+      <span>Watch<p>Me</p></span>
+      <div className="buttons-container">
+        {genres.map(genre => (
+          <Button
+            id={String(genre.id)}
+            title={genre.title}
+            iconName={genre.name}
+            onClick={() => handleClickButton(genre.id)}
+            selected={selectedGenreId === genre.id}
+          />
+        ))}
+      </div>
+    </nav>
+  )
 
-  // Complete aqui
-  <nav className="sidebar">
-    <span>Watch<p>Me</p></span>
-
-    <div className="buttons-container">
-      {genres.map(genre => (
-        <Button
-          id={String(genre.id)}
-          title={genre.title}
-          iconName={genre.name}
-          onClick={() => handleClickButton(genre.id)}
-          selected={selectedGenreId === genre.id}
-        />
-      ))}
-    </div>
-
-  </nav>
 }
